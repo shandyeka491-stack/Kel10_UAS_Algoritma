@@ -173,9 +173,6 @@ def layani_pasien():
     # Hapus dari Queue
     queue.remove_by_id(pasien.id_pasien)
 
-    # Hapus dari BST
-    bst.delete(pasien.id_pasien)
-
     # Simpan ke Riwayat
     riwayat.push(pasien)
 
