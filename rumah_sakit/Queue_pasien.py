@@ -34,6 +34,16 @@ class QueuePasien:
                 f"   Umur    : {pasien.umur}\n"
                 f"   Keluhan : {pasien.keluhan}\n"
             )
+        
+    def remove_by_id(self, id_pasien):
+        if self.is_empty():
+            return None
+
+        for i, pasien in enumerate(self.queue):
+            if pasien.id_pasien == id_pasien:
+                return self.queue.pop(i)
+
+        return None
 
     def is_empty(self):
         return len(self.queue) == 0
