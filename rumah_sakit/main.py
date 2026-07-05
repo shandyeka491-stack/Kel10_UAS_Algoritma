@@ -104,8 +104,10 @@ def hapus_pasien():
         return
 
     bst.delete(id_pasien)
+    
+    queue.remove_by_id(id_pasien)
 
-    print("\nPasien berhasil dihapus dari BST.")
+    print("\nPasien berhasil dihapus.")
     
 # ==============================
 # Data Pasien BST
@@ -130,16 +132,6 @@ def peek_queue():
 
         print("\n===== PASIEN TERDEPAN =====")
         print(pasien)
-        
-def remove_by_id(self, id_pasien):
-    if self.is_empty():
-        return None
-
-    for i, pasien in enumerate(self.queue):
-        if pasien.id_pasien == id_pasien:
-            return self.queue.pop(i)
-
-    return None
 
 # ==============================
 # Binary Heap
@@ -216,7 +208,7 @@ def statistik():
 
     print("\n===== STATISTIK SISTEM =====")
 
-    print(f"Jumlah Data BST      : {bst.node_count()}")
+    print(f"Jumlah Rekam Medis   : {bst.node_count()}")
     print(f"Tinggi BST           : {bst.height()}")
 
     print(f"Jumlah Queue         : {queue.size()}")
