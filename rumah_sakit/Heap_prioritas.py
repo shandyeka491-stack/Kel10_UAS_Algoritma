@@ -1,8 +1,11 @@
 class BinaryHeap:
     def __init__(self):
-        self.data = []
+        self.heap = []
 
-    def _priority(self, pasien):
+    # ==========================
+    # Menentukan nilai prioritas
+    # ==========================
+    def priority_value(self, pasien):
         prioritas = {
             "Gawat Darurat": 3,
             "Mendesak": 2,
@@ -10,87 +13,125 @@ class BinaryHeap:
         }
         return prioritas.get(pasien.prioritas, 0)
 
+    # ==========================
+    # Mengecek heap kosong
+    # ==========================
     def is_empty(self):
-        return len(self.data) == 0
+        return len(self.heap) == 0
 
+    # ==========================
+    # Insert
+    # ==========================
     def insert(self, pasien):
-        self.data.append(pasien)
-        self._heapify_up(len(self.data)-1)
-        print(f"\n{pasien.nama} masuk ke antrian prioritas.")
+        self.heap.append(pasien)
+        self.heapify_up(len(self.heap) - 1)
+        print(f"\n{pasien.nama} berhasil masuk ke antrian prioritas.")
 
-    def _heapify_up(self, index):
+    # ==========================
+    # Heapify Up
+    # ==========================
+    def heapify_up(self, index):
 
         while index > 0:
 
-            parent = (index-1)//2
+            parent = (index - 1) // 2
 
-            if self._priority(self.data[index]) > self._priority(self.data[parent]):
-                self.data[index], self.data[parent] = self.data[parent], self.data[index]
+            if self.priority_value(self.heap[index]) > self.priority_value(self.heap[parent]):
+                self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]
                 index = parent
             else:
                 break
 
+    # ==========================
+    # Delete Root
+    # ==========================
     def delete_root(self):
 
         if self.is_empty():
-            print("\nHeap kosong.")
+            print("\nAntrian prioritas kosong.")
             return None
 
-        if len(self.data)==1:
-            return self.data.pop()
+        if len(self.heap) == 1:
+            return self.heap.pop()
 
-        root = self.data[0]
+        root = self.heap[0]
 
-        self.data[0]=self.data.pop()
+        self.heap[0] = self.heap.pop()
 
-        self._heapify_down(0)
+        self.heapify_down(0)
 
         return root
 
-    def _heapify_down(self,index):
+    # ==========================
+    # Heapify Down
+    # ==========================
+    def heapify_down(self, index):
 
-        size=len(self.data)
+        size = len(self.heap)
 
         while True:
 
-            left=2*index+1
-            right=2*index+2
-            terbesar=index
+            left = (2 * index) + 1
+            right = (2 * index) + 2
 
-            if left<size and self._priority(self.data[left])>self._priority(self.data[terbesar]):
-                terbesar=left
+            terbesar = index
 
-            if right<size and self._priority(self.data[right])>self._priority(self.data[terbesar]):
-                terbesar=right
+            if (
+                left < size
+                and self.priority_value(self.heap[left])
+                > self.priority_value(self.heap[terbesar])
+            ):
+                terbesar = left
 
-            if terbesar!=index:
+            if (
+                right < size
+                and self.priority_value(self.heap[right])
+                > self.priority_value(self.heap[terbesar])
+            ):
+                terbesar = right
 
-                self.data[index],self.data[terbesar]=self.data[terbesar],self.data[index]
-                index=terbesar
-
+            if terbesar != index:
+                self.heap[index], self.heap[terbesar] = (
+                    self.heap[terbesar],
+                    self.heap[index],
+                )
+                index = terbesar
             else:
                 break
 
+    # ==========================
+    # Peek
+    # ==========================
     def peek(self):
 
         if self.is_empty():
-            print("\nHeap kosong.")
+            print("\nAntrian prioritas kosong.")
             return None
 
-        return self.data[0]
+        return self.heap[0]
 
+    # ==========================
+    # Display
+    # ==========================
     def display(self):
 
         if self.is_empty():
             print("\nAntrian prioritas kosong.")
             return
 
-        print("\n====== ANTRIAN PRIORITAS ======")
+        print("\n======= ANTRIAN PRIORITAS =======")
 
-        for i,p in enumerate(self.data,start=1):
+        for i, pasien in enumerate(self.heap, start=1):
 
-            print(f"{i}. ID : {p.id_pasien}")
-            print(f"   Nama      : {p.nama}")
-            print(f"   Prioritas : {p.prioritas}")
-            print(f"   Keluhan   : {p.keluhan}")
-            print("-"*35)
+            print(f"{i}. ID        : {pasien.id_pasien}")
+            print(f"   Nama      : {pasien.nama}")
+            print(f"   Umur      : {pasien.umur}")
+            print(f"   Keluhan   : {pasien.keluhan}")
+            print(f"   Prioritas : {pasien.prioritas}")
+            print("-" * 35)
+
+    # ==========================
+    # Size
+    # ==========================
+    def size(self):
+        return len(self.heap)
